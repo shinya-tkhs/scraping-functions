@@ -10,7 +10,8 @@
     "target": "es2017",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "esModuleInterop": false
   },
   "compileOnSave": true,
   "exclude": [

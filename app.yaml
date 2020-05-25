@@ -2,14 +2,6 @@ runtime: nodejs10
 
 instance_class: F1
 
-handlers:
-  - url: /_next
-    static_dir: .next
-    secure: always
-
-env_variables:
-  HOST: '0.0.0.0'
-  NODE_ENV: 'production'
 
 # runtime: nodejs10
 
