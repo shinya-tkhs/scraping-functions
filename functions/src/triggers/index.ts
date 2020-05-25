@@ -1,5 +1,6 @@
+import { IFunction } from "../interfaces";
 import { pubsub } from "./pubsub";
 
-const baseArray: any[] = [];
+const baseArray: IFunction[] = [];
 
 export const triggers = baseArray.concat(pubsub);

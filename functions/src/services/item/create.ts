@@ -1,6 +1,7 @@
+import { IService } from "../../interfaces";
 import { createItemList } from "../../repositories/item";
 
-export const ItemCreateService = async (data: any): Promise<any> => {
+export const ItemCreateService = async (data: any): Promise<IService> => {
   try {
     await createItemList(data);
 

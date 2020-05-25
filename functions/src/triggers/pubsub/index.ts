@@ -1,3 +1,4 @@
+import { IFunction } from "../../interfaces";
 import { createItems } from "./create_books";
 
-export const pubsub: any[] = [createItems];
+export const pubsub: IFunction[] = [createItems];

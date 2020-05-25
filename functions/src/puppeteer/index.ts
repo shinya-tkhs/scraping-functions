@@ -3,7 +3,11 @@ import * as puppeteer from "puppeteer";
 // import * as https from "https";
 import * as admin from "firebase-admin";
 
-admin.initializeApp();
+import * as serviceAccount from "../../serviceAccount.json";
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
+});
 
 interface IBookItem {
   url: string;
@@ -12,129 +16,127 @@ interface IBookItem {
 
 export async function scrapeBooks() {
   const browser = await puppeteer.launch({
-    // args: ["--no-sandbox"]
-    headless: false
-    // executablePath: "/usr/bin/chromium-browser"
+    args: ["--no-sandbox"]
+    // headless: false
   });
   const page = await browser.newPage();
 
-  console.log(browser.wsEndpoint());
+  const currentMonthNum = new Date().getMonth() + 1;
 
-  await page.goto("http://dain.cocolog-nifty.com/myblog/2020/03/index.html", {
-    waitUntil: "networkidle2"
-  });
+  // for (let year = 2020; year < new Date().getFullYear() + 1; year++) {
+  for (let month = 3; month < currentMonthNum + 2; month++) {
+    const currentMonth = month < 10 ? `0${month}` : `${month}`;
 
-  // 商品情報を配列の中に入れ込む
-  const itemList = await page.evaluate(() => {
-    const articles = Array.from(document.querySelectorAll(".entry-body-text"));
-
-    const getBookItem = (imgElem: HTMLImageElement): IBookItem | undefined => {
-      const parentElem = imgElem.parentElement as HTMLLinkElement;
-      const url: string = parentElem.href;
-      const imgSrc = imgElem.src;
-      const hasTarget = ["amazon", "amzn"].some(
-        (value: string): any => url && url.includes(value)
+    try {
+      await page.goto(
+        `http://dain.cocolog-nifty.com/myblog/2020/${currentMonth}/index.html`,
+        {
+          waitUntil: "load"
+        }
       );
-
-      return hasTarget
-        ? {
-            url,
-            imgSrc
-          }
-        : undefined;
-    };
-
-    return articles
-      .map((article: any) => {
-        const imgs = Array.from(article.querySelectorAll("img"));
-        return imgs
-          .map((value: any) => getBookItem(value))
-          .filter(value => value)[0];
-      })
-      .filter(value => value);
-  });
-
-  console.log("itemList", itemList);
-
-  for (let i = 0; i < itemList.length; i++) {
-    const item = itemList[i] as IBookItem;
-
-    if (!item) return;
-
-    await page.goto(item.url, {
-      // waitUntil: "domcontentloaded"
-      waitUntil: "load",
-      timeout: 0
-    });
-
-    const result = await page.evaluate(() => {
-      const title = document.getElementById("productTitle")?.textContent;
-      const price = document.querySelector(".a-color-price")?.textContent;
-      const image = (document.querySelector(".frontImage") as HTMLImageElement)
-        ?.src;
-
-      return {
-        isBookPage: title,
-        title,
-        price,
-        image
-      };
-    });
-
-    if (result.isBookPage) {
-      const createItemList = async (data: any): Promise<any> => {
-        const db = admin.firestore();
-        const itemDoc = db.collection("itemList").doc();
-        await itemDoc.set(data);
-      };
-
-      const title = result.title?.replace(/[\n\r]+|[\s]{2,}/g, " ").trim();
-      const price = result.price?.replace(/[\n\r]+|[\s]{2,}/g, " ").trim();
-      const image = result.image?.replace(/[\n\r]+|[\s]{2,}/g, " ").trim();
-
-      console.log(title, price, image);
-
-      createItemList({
-        title,
-        price,
-        image
-      });
-
-      // const data = JSON.stringify({
-      //   test: 2222
-      // });
-
-      // const options = {
-      //   port: 443,
-      //   path:
-      //     "https://us-central1-nuxt-firebase-app-26388.cloudfunctions.net/create__item__list",
-      //   method: "PUT",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "Content-Length": data.length
-      //   },
-      //   data
-      // };
-
-      // const req = https.request(options, res => {
-      //   console.log(`statusCode: ${res.statusCode}`);
-
-      //   res.on("data", d => {
-      //     process.stdout.write(d);
-      //   });
-      // });
-
-      // req.on("error", error => {
-      //   console.error(error);
-      // });
-
-      // req.write(data);
-      // req.end();
-
-      // ここでCloud Functionsを動かすべき
+    } catch (err) {
+      console.error("Puppeteer could not lead to page: ", err);
     }
 
-    await page.goBack();
+    // 商品情報を配列の中に入れ込む
+    const itemList = await page.evaluate(() => {
+      const articles = Array.from(
+        document.querySelectorAll(".entry-body-text")
+      );
+
+      const getBookItem = (
+        imgElem: HTMLImageElement
+      ): IBookItem | undefined => {
+        const parentElem = imgElem.parentElement as HTMLLinkElement;
+        const url: string = parentElem.href;
+        const imgSrc = imgElem.src;
+        const hasTarget =
+          url &&
+          (url.includes("amazon") || url.includes("amzon")) &&
+          !url.includes("PSYCHO-PASS");
+
+        return hasTarget
+          ? {
+              url,
+              imgSrc
+            }
+          : undefined;
+      };
+
+      return articles
+        .map((article: any) => {
+          const imgs = Array.from(article.querySelectorAll("img"));
+          return imgs
+            .map((value: any) => getBookItem(value))
+            .filter(value => value);
+        })
+        .reduce((acc, val) => acc.concat(val), []);
+    });
+
+    console.log("itemList", itemList);
+
+    try {
+      for (let i = 0; i < itemList.length; i++) {
+        const item = itemList[i] as IBookItem;
+
+        if (!item) return;
+
+        await page.goto(item.url, {
+          waitUntil: "load",
+          timeout: 10000
+        });
+
+        const result = await page.evaluate(() => {
+          const title =
+            document.getElementById("productTitle") &&
+            document.getElementById("productTitle")!.textContent;
+          const price =
+            document.querySelector(".a-color-price") &&
+            document.querySelector(".a-color-price")!.textContent;
+          const image = (document.querySelector(
+            ".frontImage"
+          ) as HTMLImageElement)?.src;
+
+          return {
+            title,
+            price,
+            image
+          };
+        });
+
+        if (result.title) {
+          const createItemList = async (data: any): Promise<any> => {
+            const db = admin.firestore();
+            const itemDoc = db.collection("itemList").doc();
+            await itemDoc.set(data);
+          };
+
+          const title = result.title?.replace(/[\n\r]+|[\s]{2,}/g, " ").trim();
+          const price = result.price?.replace(/[\n\r]+|[\s]{2,}/g, " ").trim();
+          const image = result.image?.replace(/[\n\r]+|[\s]{2,}/g, " ").trim();
+          const url = item.url;
+
+          console.log(title, price, image, month);
+
+          try {
+            createItemList({
+              title,
+              price,
+              image,
+              url,
+              month
+            });
+          } catch (err) {
+            console.error("Could not post to firestore: ", err);
+          }
+        }
+
+        await page.goBack();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+    // }
   }
 
   await browser.close();

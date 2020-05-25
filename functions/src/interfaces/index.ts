@@ -1,2 +1,2 @@
-export * from "./poll";
 export * from "./admin";
+export * from "./function";

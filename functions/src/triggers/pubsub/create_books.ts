@@ -1,12 +1,12 @@
 import * as functions from "firebase-functions";
+import { IFunction } from "../../interfaces";
 import { scrapeBooks } from "../../puppeteer";
-
-const REGION = "asia-northeast1";
+import { REGION } from "../../const";
 
 const trigger = functions
   .region(REGION)
   .runWith({
-    timeoutSeconds: 300,
+    timeoutSeconds: 500,
     memory: "2GB"
   })
   .pubsub.topic("create-item")
@@ -20,7 +20,7 @@ const trigger = functions
     }
   );
 
-export const createItems: any = {
+export const createItems: IFunction = {
   // triggerの場合は関数名のprefixを指定する
   name: "create__item__trigger",
   function: trigger

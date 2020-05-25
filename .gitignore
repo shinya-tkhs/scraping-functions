@@ -89,3 +89,7 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# gcp credentuals
+key.json
+serviceAccount.json

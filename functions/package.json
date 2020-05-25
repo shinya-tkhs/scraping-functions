@@ -1,5 +1,5 @@
 {
-  "name": "functions",
+  "name": "scraping-functions",
   "scripts": {
     "config:unset": "firebase functions:config:unset env",
     "config:unset:ci": "firebase functions:config:unset --token $FIREBASE_TOKEN admin_env --project $PROJECT_ID",
@@ -13,7 +13,8 @@
     "start": "yarn shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "lint": "eslint --fix -c ./.eslintrc.json './**/*.ts'"
+    "lint": "eslint --fix -c ./.eslintrc.json './**/*.ts'",
+    "generate": "../config.sh"
   },
   "lint-staged": {
     "*.ts": "eslint -c ./.eslintrc.json './**/*.ts'"
@@ -58,6 +59,7 @@
     "@types/request-ip": "^0.0.34",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
+    "cpx": "^1.5.0",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-node": "^10.0.0",
