@@ -1,0 +1,55 @@
+name:
+  scraping-functions
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    strategry:
+      matrix:
+        node-version: [10]
+
+    steps:
+      # Setup
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Prepare Node Envinronment
+        uses: actions/setup-node@v1
+        with:
+          node-versions: ${{ matrix.node-version }}
+
+      - name: Install expect command
+        run: sudo apt-get install expect
+
+      - name: Install firebase-tools
+        uses: sudo npm install -g firebase-tools
+
+      - name: Install eslint and yarn
+        run: |
+          npm install -g eslint
+          npm install -g yarn
+
+      - name: Install Dependencies
+        working-directory: ./functions
+        run: yarn
+
+      - name: Add Priviledge for firebase-tools
+        run: sudo chown -R $USER:$(id -gn $USER) /home/runner/.config
+
+      # Deploy
+      # - name: Deploy Cloud functions
+      #   working-firectory: ./functions
+      #   run: |
+      #     sudo chown 777 ci-deploy.sh
+      #     expect ci-deploy-exp.sh
+      #   env:
+      #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      #     PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+
+
