@@ -46,7 +46,6 @@ jobs:
       - name: Deploy Cloud functions
         working-directory: ./functions
         run: |
-          echo 'github-actions@dev-shinya.iam.gserviceaccount.com' | gcloud auth activate-service-account --key-file=$GCP_KEY
           gcloud app deploy app.yaml --project=dev-shinya
 
         env:
