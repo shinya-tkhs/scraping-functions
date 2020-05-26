@@ -28,7 +28,7 @@ jobs:
         run: sudo apt-get install expect
 
       - name: Install firebase-tools
-        uses: sudo npm install -g firebase-tools
+        run: sudo npm install -g firebase-tools
 
       - name: Install eslint and yarn
         run: |
