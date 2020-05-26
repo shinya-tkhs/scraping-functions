@@ -46,6 +46,7 @@ jobs:
       - name: Deploy Cloud functions
         working-directory: ./functions
         run: |
+          gcloud auth activate-service-account dev-shinya@appspot.gserviceaccount.com --key-file=$GCP_KEY
           gcloud app deploy app.yaml --project=dev-shinya
 
         env:
