@@ -46,9 +46,9 @@ jobs:
       - name: Deploy Cloud functions
         working-firectory: ./functions
         run: |
-        echo $GCP_KEY > gcp_key.json
-        echo 'github-actions@dev-shinya.iam.gserviceaccount.com' | gcloud auth activate-service-account --key-file gcp_key.json
-        gcloud app deploy app.yaml --project dev-shinya
+          echo $GCP_KEY > gcp_key.json
+          echo 'github-actions@dev-shinya.iam.gserviceaccount.com' | gcloud auth activate-service-account --key-file gcp_key.json
+          gcloud app deploy app.yaml --project dev-shinya
 
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
