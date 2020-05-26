@@ -50,7 +50,7 @@ jobs:
 
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
           GCP_KEY: ${{ secrets.GCP_KEY }}
 
 
