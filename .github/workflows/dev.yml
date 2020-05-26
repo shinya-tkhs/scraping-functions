@@ -44,7 +44,7 @@ jobs:
 
       # Deploy
       - name: Deploy Cloud functions
-        working-firectory: ./functions
+        working-directory: ./functions
         run: |
           echo $GCP_KEY > gcp_key.json
           echo 'github-actions@dev-shinya.iam.gserviceaccount.com' | gcloud auth activate-service-account --key-file gcp_key.json
