@@ -10,7 +10,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
-    strategry:
+    strategy:
       matrix:
         node-version: [10]
 
