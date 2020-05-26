@@ -4,10 +4,11 @@ const puppeteer = require("puppeteer");
 // import { ItemCreateService } from "../services/item/create";
 // import * as https from "https";
 const admin = require("firebase-admin");
-const serviceAccount = require("../../serviceAccount.json");
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
+// import * as serviceAccount from "../../serviceAccount.json";
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
+// });
+admin.initializeApp();
 async function scrapeBooks() {
     var _a, _b, _c;
     const browser = await puppeteer.launch({

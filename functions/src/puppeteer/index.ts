@@ -3,11 +3,13 @@ import * as puppeteer from "puppeteer";
 // import * as https from "https";
 import * as admin from "firebase-admin";
 
-import * as serviceAccount from "../../serviceAccount.json";
+// import * as serviceAccount from "../../serviceAccount.json";
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
+// });
+
+admin.initializeApp();
 
 interface IBookItem {
   url: string;

@@ -9,11 +9,14 @@ import { triggers } from "./triggers";
 import { REGION } from "./const";
 import { cors } from "./middleware/cors";
 
-import * as serviceAccount from "../serviceAccount.json";
+// import * as serviceAccount from "../serviceAccount.json";
 
-admin.initializeApp({
-  credential: admin.credential.cert(JSON.stringify(serviceAccount))
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(JSON.stringify(serviceAccount))
+// });
+
+admin.initializeApp();
+
 // admin.credential.cert(JSON.stringify(serviceAccount));
 
 routes.forEach((routeObj: any) => {
