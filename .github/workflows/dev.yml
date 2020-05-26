@@ -46,10 +46,7 @@ jobs:
       - name: Deploy Cloud functions
         working-directory: ./functions
         run: |
-          gcloud auth activate-service-account \
-          dev-shinya@appspot.gserviceaccount.com \
-            --key-file=$GCP_KEY --project=dev-shinya
-          gcloud app deploy app.yaml
+          firebase deploy --only functions --interactive --token $FIREBASE_TOKEN --project $PROJECT_ID
 
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
@@ -57,3 +54,7 @@ jobs:
           GCP_KEY: ${{ secrets.GCP_KEY }}
 
 
+          # gcloud auth activate-service-account \
+          # dev-shinya@appspot.gserviceaccount.com \
+          #   --key-file=$GCP_KEY --project=dev-shinya
+          # gcloud app deploy app.yaml
