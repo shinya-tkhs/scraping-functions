@@ -58,7 +58,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          path: './functions', '!./node_modules/**/*',
+          path: './functions', '!./node_modules/**/*'
           name: functions.zip
 
           # gcloud auth activate-service-account \
