@@ -43,22 +43,22 @@ jobs:
         run: sudo chown -R $USER:$(id -gn $USER) /home/runner/.config
 
       # Deploy
-      - name: Deploy Cloud functions
-        working-directory: ./functions
-        run: |
-          firebase deploy --only functions --interactive --token $FIREBASE_TOKEN --project $PROJECT_ID
+      # - name: Deploy Cloud functions
+      #   working-directory: ./functions
+      #   run: |
+      #     firebase deploy --only functions --interactive --token $FIREBASE_TOKEN --project $PROJECT_ID
 
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          GCP_KEY: ${{ secrets.GCP_KEY }}
+      #   env:
+      #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      #     PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      #     GCP_KEY: ${{ secrets.GCP_KEY }}
 
       #  Artifact生成
       - name: Generate artifact file
         uses: actions/upload-artifact@v2
         with:
-          name: artifact.zip
-          path: ./artifact
+          path: ./functions
+          name: functions.zip
 
           # gcloud auth activate-service-account \
           # dev-shinya@appspot.gserviceaccount.com \
