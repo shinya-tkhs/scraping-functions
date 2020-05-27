@@ -53,6 +53,12 @@ jobs:
           PROJECT_ID: ${{ secrets.PROJECT_ID }}
           GCP_KEY: ${{ secrets.GCP_KEY }}
 
+      #  Artifact生成
+      - name: Generate artifact file
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact.zip
+          path: ./artifact
 
           # gcloud auth activate-service-account \
           # dev-shinya@appspot.gserviceaccount.com \

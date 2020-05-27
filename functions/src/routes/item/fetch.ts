@@ -9,6 +9,6 @@ router.get("/", async (_: Request, res: Response) => {
 });
 
 export const fetch = {
-  name: "fetch__item__list",
+  name: "fetch__item__list_",
   router
 };

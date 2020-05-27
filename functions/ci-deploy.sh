@@ -1,0 +1,1 @@
+firebase deploy --only functions --interactive --token $FIREBASE_TOKEN --project $PROJECT_ID

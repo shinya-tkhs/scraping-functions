@@ -9,13 +9,14 @@ import { triggers } from "./triggers";
 import { REGION } from "./const";
 import { cors } from "./middleware/cors";
 
-// import * as serviceAccount from "../serviceAccount.json";
+import * as serviceAccount from "../serviceAccount.json";
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(JSON.stringify(serviceAccount))
-// });
+admin.initializeApp({
+  // credential: admin.credential.cert(JSON.stringify(serviceAccount))
+  credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
+});
 
-admin.initializeApp();
+// admin.initializeApp();
 
 // admin.credential.cert(JSON.stringify(serviceAccount));
 
