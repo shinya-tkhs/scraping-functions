@@ -10,10 +10,10 @@ const triggers_1 = require("./triggers");
 // import { cors } from "./utils/cors";
 const const_1 = require("./const");
 const cors_1 = require("./middleware/cors");
-const serviceAccount = require("../serviceAccount.json");
+// import * as serviceAccount from "../serviceAccount.json";
 admin.initializeApp({
-    // credential: admin.credential.cert(JSON.stringify(serviceAccount))
-    credential: admin.credential.cert(serviceAccount)
+// credential: admin.credential.cert(JSON.stringify(serviceAccount))
+// credential: admin.credential.cert(serviceAccount as admin.ServiceAccount)
 });
 // admin.initializeApp();
 // admin.credential.cert(JSON.stringify(serviceAccount));
