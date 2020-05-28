@@ -53,10 +53,12 @@ jobs:
       #     PROJECT_ID: ${{ secrets.PROJECT_ID }}
       #     GCP_KEY: ${{ secrets.GCP_KEY }}
 
+      #  Artifact生成前にnode_modulesを削除
+      - name: Remove node_modules from artifact
+        run: rm -rf ./functions/node_modules
+
       #  Artifact生成
       - name: Generate artifact file
-        if: failure()
-        run: rm -rf ./functions/node_modules
         uses: actions/upload-artifact@v2
         with:
           paths: './functions'
