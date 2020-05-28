@@ -61,7 +61,7 @@ jobs:
       - name: Generate artifact file
         uses: actions/upload-artifact@v2
         with:
-          paths: './functions'
+          path: './functions'
           name: functions.zip
 
           # gcloud auth activate-service-account \
