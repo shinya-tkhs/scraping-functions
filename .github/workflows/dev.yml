@@ -56,9 +56,10 @@ jobs:
       #  Artifact生成
       - name: Generate artifact file
         if: failure()
+        run: rm -rf ./functions/node_modules
         uses: actions/upload-artifact@v2
         with:
-          paths: ['./functions', '!./node_modules/**/*']
+          paths: './functions'
           name: functions.zip
 
           # gcloud auth activate-service-account \
