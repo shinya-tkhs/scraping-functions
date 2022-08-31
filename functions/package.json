@@ -44,7 +44,7 @@
     "firebase-functions": "3.5.0",
     "json2csv": "^5.0.0",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.27",
+    "moment-timezone": "^0.5.35",
     "mysql2": "^2.0.1",
     "puppeteer": "2.1.1",
     "request-ip": "^2.1.3",
